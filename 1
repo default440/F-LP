@@ -1,0 +1,16 @@
+(defun penultimate(lst) (first (last lst 2)))
+
+(defun fullength(lst)
+    (setq len 0)
+    (typecase lst
+        (list (dolist (element lst) (setq len (+ len (fullength element)))))
+        (t (setq len 1)))
+    len
+)
+
+(setq lst1 '(1 2 3))
+(setq lst2 '(1 (2 3) 4))
+(write (penultimate lst1))
+(terpri)
+(write (fullength lst2))
+(terpri)

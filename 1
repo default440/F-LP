@@ -16,10 +16,30 @@
     result
 )
 
+
+(defun averagescore(lst)
+    (setq result '())
+    (dolist (student lst)
+        (setq resforstd '())
+        (setq scores (rest student))
+        (setq sum 0)
+        (dolist (score scores) (setq sum (+ sum (second score)))) 
+        (push (/ sum (length scores)) resforstd)
+        (push (first student) resforstd)
+        (push resforstd result)
+    )
+    (setq reversal '())
+    (dolist (element result) (push element reversal))
+    reversal
+)
+
 (setq lst1 '(1 2 3))
-(setq lst2 '(1 (2 3) 4))
 (write (penultimate lst1))
 (terpri)
+(setq lst2 '(1 (2 3) 4))
 (write (fullength lst2))
 (terpri)
 (write (myfunc 2 3))
+(terpri)
+(setq lst3 '(("st1" ("d1" 3) ("d2" 4) ("d3" 5)) ("st2" ("d3" 5) ("d2" 5) ("d1" 5))))
+(write (averagescore lst3))

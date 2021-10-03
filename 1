@@ -8,9 +8,18 @@
     len
 )
 
+(defun myfunc(x n)
+    (setq result '())
+    (loop for i from 1 to n collect 
+        (push (make-list 1 :initial-element x) result)
+    )
+    result
+)
+
 (setq lst1 '(1 2 3))
 (setq lst2 '(1 (2 3) 4))
 (write (penultimate lst1))
 (terpri)
 (write (fullength lst2))
 (terpri)
+(write (myfunc 2 3))

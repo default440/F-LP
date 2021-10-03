@@ -1,0 +1,16 @@
+(defun all (p x)
+    (setq result t)
+    (dolist (element x) (if (not (funcall p element)) (setq result nil)))
+    result
+)
+
+(defun isatom (x)
+    (setq result nil)
+    (if (atom x) (setq result t))
+    result
+)
+
+(setq lst1 '(0 (1 2) 2 (3)))
+(setq lst2 '(1 1 1))
+
+(write (all 'isatom lst1))

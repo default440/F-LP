@@ -1,0 +1,18 @@
+woman(mary).
+woman(anna).
+man(jhon).
+man(dick).
+personality(mary, lovely).
+personality(anna, kind).
+personality(jhon, kind).
+personality(jhon, strong).
+personality(jhon, manly).
+personality(dick, rich).
+manlike(Woman):- woman(Woman), personality(Woman, lovely), !.
+womanlike(Woman, Man):- man(Man), manlike(Woman), personality(Man, kind), !.
+womanlike(Woman, Man):- man(Man), personality(Man, kind), personality(Man, strong), !.
+happy(X):- personality(X, rich), !.
+happy(X):- woman(Woman), womanlike(Woman, X), !.
+
+happy(jhon), !.
+womanlike(woman(Woman), Man), !.

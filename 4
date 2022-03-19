@@ -1,0 +1,48 @@
+no_doubles([],[]).
+no_doubles([H|Tail],NewTail):-no_doubles(Tail,NewTail),member(H,NewTail),!.
+no_doubles([H|Tail],[H|NewTail]):-no_doubles(Tail,NewTail).
+
+result([X,Y], List1):- findall([X1,Y1], move_chess([X,Y], [X1,Y1], 3), List), no_doubles(List, List1).
+
+move_chess(Place1, Place2, Count) :-
+    retractall( figure_moved(_) ), assertz( figure_moved(0) ),
+    move_chess(Place1, Place2, Count, 1).
+
+move_chess(Point1, Point2, Count, Count) :-
+    move_chess_figure(Point1, Point2).
+move_chess(Point1, Point2, Count, Count0) :-
+    check_moves,
+    move_chess_figure(Point1, X),
+    Count1 is Count0 + 1,
+    move_chess(X, Point2, Count, Count1).
+ 
+check_moves :-
+    figure_moved(Moved),
+    Moved < 4,
+    retract( figure_moved(Move0) ),
+    Move1 is Move0 + 1,
+    assertz( figure_moved(Move1) ).
+ 
+move_chess_figure([X, Y], [X1, Y1]) :-
+    legal_chess_point(X, Y),
+    rule_chess_figure(X0, Y0),
+    X1 is X + X0, Y1 is Y + Y0,
+    legal_chess_point(X1, Y1).
+    
+legal_chess_point(X, Y) :-
+    X >= 1, Y >= 1,
+    X =< 8, Y =< 8.
+    
+rule_chess_figure(1, 2).
+rule_chess_figure(-1, 2).
+rule_chess_figure(1, -2).
+rule_chess_figure(-1, -2).
+rule_chess_figure(2, 1).
+rule_chess_figure(-2, 1).
+rule_chess_figure(2, -1).
+rule_chess_figure(-2, -1).
+
+
+
+
+result([8,8], List1).

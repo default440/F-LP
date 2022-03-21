@@ -1,12 +1,10 @@
 (defun all (p x)
-    (setq result t)
-    (dolist (element x) (if (not (funcall p element)) (setq result nil)))
+    (dolist (element x) (cond ((not (funcall p element)) (setq result nil)) ((funcall p element) (setq result t))))
     result
 )
 
 (defun isatom (x)
-    (setq result nil)
-    (if (atom x) (setq result t))
+    (cond ((atom x) (setq result t)) ((not (atom x))(setq result nil)))
     result
 )
 
@@ -14,3 +12,5 @@
 (setq lst2 '(1 1 1))
 
 (write (all 'isatom lst1))
+(terpri)
+(write (all 'isatom lst2))

@@ -2,33 +2,27 @@ no_doubles([],[]).
 no_doubles([H|Tail],NewTail):-no_doubles(Tail,NewTail),member(H,NewTail),!.
 no_doubles([H|Tail],[H|NewTail]):-no_doubles(Tail,NewTail).
 
-result([X,Y], List1):- findall([X1,Y1], move([X,Y], [X1,Y1]), List1).
+result1([X,Y], List1):- findall([X1,Y1], move([X,Y], [X1,Y1]), List1).
+result2([X,Y], List2):- findall([X1,Y1], move([X,Y], [X1,Y1]), List1), no_doubles(List1, List2).
 
 move(Point1, Point2) :-
-    retractall( figure_moved(_) ), assertz( figure_moved(0) ),
     move(Point1, Point2, 3, 1).
 
 move(Point1, Point2, Count, Count) :-
     move_figure(Point1, Point2).
 move(Point1, Point2, Count, Count0) :-
-    check,
+    check(Count, Count0),
     move_figure(Point1, X),
     Count1 is Count0 + 1,
     move(X, Point2, Count, Count1).
  
-check :-
-    figure_moved(Moved),
-    Moved < 4,
-    retract( figure_moved(Move0) ),
-    Move1 is Move0 + 1,
-    assertz( figure_moved(Move1) ).
+check(Count, Count0) :- Count0 =< Count.
  
-move_figure([X, Y], List) :-
+move_figure([X, Y], [X1, Y1]) :-
     legal_point(X, Y),
     position(X0, Y0),
     X1 is X + X0, Y1 is Y + Y0,
-    legal_point(X1, Y1),
-    no_doubles([X1, Y1], List).
+    legal_point(X1, Y1).
     
 legal_point(X, Y) :-
     X >= 1, Y >= 1,
@@ -45,6 +39,8 @@ position(-2, -1).
 
 
 
+result1([8,8], List1).
+result2([8,8], List2).
 
-result([8,8], List1).
-List1 = [[8,7],[5,6],[7,2],[5,2],[8,5],[8,3],[6,5],[4,5],[7,8],[3,8],[6,7],[4,7],[6,3],[4,3],[7,6],[3,6],[7,4],[3,4]]
+List1 = [[7,6],[6,7],[7,6],[5,6],[8,7],[4,7],[7,6],[7,2],[6,5],[6,3],[7,6],[5,6],[7,2],[5,2],[8,5],[4,5],[8,3],[4,3],[6,5],[4,5],[7,8],[3,8],[7,6],[3,6],[6,7],[4,7],[6,3],[4,3],[7,6],[3,6],[7,4],[3,4],[8,7],[6,7],[8,3],[6,3],[5,6],[5,4],[6,7],[4,7],[6,3],[4,3],[7,6],[3,6],[7,4],[3,4],[7,6],[6,7],[5,6],[3,6],[6,7],[2,7],[7,8],[7,4],[6,7],[6,5],[5,8],[3,8],[5,4],[3,4],[6,7],[2,7],[6,5],[2,5]]
+List2 = [[7,2],[5,2],[8,5],[4,5],[8,7],[8,3],[4,7],[6,3],[4,3],[7,6],[5,6],[3,6],[7,8],[7,4],[5,8],[3,8],[5,4],[3,4],[6,7],[2,7],[6,5],[2,5]]

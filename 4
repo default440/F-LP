@@ -5,21 +5,16 @@ remove_duplicates([X|Xs], [X|Ys]):- !, remove_duplicates(Xs, Ys).
 result1([X,Y], List1):- findall([X1,Y1], move([X,Y], [X1,Y1]), List1).
 result2([X,Y], List2):- findall([X1,Y1], move([X,Y], [X1,Y1]), List1), remove_duplicates(List1, List2).
 
-move(Point1, Point2) :- move(Point1, Point2, 3, 1).
-
-move(Point1, Point2, Count, Count):- move_figure(Point1, Point2, List).
-move(Point1, Point2, Count, Count0):-
-    Count0 =< Count,
-    move_figure(Point1, X),
-    Count1 is Count0 + 1,
-    move(X, Point2, Count, Count1).
+move(Point0, Point3):-
+    move_figure(Point0, Point1),
+    move_figure(Point1, Point2),
+    move_figure(Point2, Point3).
 
 move_figure([X, Y], [X1, Y1]):-
     position(X0, Y0),
     X1 is X + X0, Y1 is Y + Y0,
     legal_point(X1, Y1).
-    
-move_figure([X, Y], [X1, Y1], List):- move_figure([X, Y], [X1, Y1]), remove_duplicates([X1, Y1], List).
+
 
 legal_point(X, Y):-
     X >= 1, Y >= 1,
